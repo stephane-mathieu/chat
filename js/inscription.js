@@ -1,4 +1,5 @@
 document.addEventListener('DOMContentLoaded', (event) => {
+
     let form = document.querySelector('#loginForm');
 
     // Ecouter la modification de l'email
@@ -31,8 +32,6 @@ document.addEventListener('DOMContentLoaded', (event) => {
     });
 
 
-
-
     // Validation EMAIL //
     const validEmail = function(inputEmail) {
         // Creation de la reg exp pour la validation de l'email
@@ -57,27 +56,47 @@ document.addEventListener('DOMContentLoaded', (event) => {
 
     // Validation Login //
     const validLogin = function(inputLogin) {
-        // Creation de la reg exp pour la validation de l'email
-        let emailRegExp = new RegExp('^[a-zA-Z0-9.-_]+[@]{1}[a-zA-Z0-9.-_]+[.]{1}[a-z]{2,10}$', 'g');
-
         // recuperation de la balise small
         let small = inputLogin.nextElementSibling;
 
-        // on test l'expression reguliere
-        if (emailRegExp.test(inputLogin.value)) {
-            small.innerHTML = "Adresse Mail Valide";
-            small.classList.remove('text-danger');
-            small.classList.add('text-success');
-            return true;
-        } else {
-            small.innerHTML = "Adresse Non Valide"
-            small.classList.remove('text-success');
-            small.classList.add('text-danger');
-            return false;
-        }
+        fetch('traitement_Inscription01.php', {
+            method: 'POST',
+        }).then(response => {
+            return response.json();
+
+        }).then(response => {
+            // response.forEach(element => {
+            //     console.log(element['login']);
+            //     console.log(inputLogin.value);
+            //     if (inputLogin.value == element['login']) {
+            //         small.innerHTML = "Login utilisé"
+            //         small.classList.remove('text-success');
+            //         small.classList.add('text-danger');
+            //         return false;
+            //     } else {
+            //         small.innerHTML = "login good";
+            //         small.classList.remove('text-danger');
+            //         small.classList.add('text-success');
+            //         // return true;/
+            //     }
+            // });
+            for (var i = 0; i < response.length; i++) {
+                if (inputLogin.value == response[i]['login']) {
+                    small.innerHTML = "Login utilisé"
+                    small.classList.remove('text-success');
+                    small.classList.add('text-danger');
+                    return false;
+                    // break
+                } else {
+                    small.innerHTML = "login good";
+                    small.classList.remove('text-danger');
+                    small.classList.add('text-success');
+                    // return true;/
+
+                }
+            }
+        })
     };
-
-
 
 
     // Validation PASSWORD //
