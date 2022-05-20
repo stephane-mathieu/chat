@@ -1,3 +1,7 @@
+<?php
+require_once('Controllers/Controller_Connexion.php');
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -15,7 +19,7 @@
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-8">
-                <form action="Controller_Connexion.php" method="POST" id="loginForm">
+                <form action="" method="POST" id="loginForm">
                     <!-- Email -->
                     <div class="form-group mb-3">
                         <label for="Email1" class="form-label">Email address</label>
@@ -31,6 +35,7 @@
 
                     <div class="form-group mb-3 d-grid gap-2">
                         <button type="submit" class="btn btn-secondary  ">Connexion</button>
+                        <small><?php echo @$msg; ?></small>
                     </div>
                 </form>
             </div>

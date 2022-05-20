@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -18,27 +19,21 @@
                 <form action="Controller_Inscription.php" method="POST" id="loginForm">
                     <!-- Email -->
                     <div class="form-group mb-3">
-                        <label for="Email1" class="form-label">Email address</label>
+                        <label for="Email1" class="form-label">Email</label>
+                        <small></small>
                         <input type="email" class="form-control" name="email">
                         <small></small>
                     </div>
                        <!-- Login -->
                        <div class="form-group mb-3">
-                        <label for="Login1" class="form-label">Login</label>
+                        <label for="Login1" class="form-label">Nom d'utilisateur</label>
                         <input type="text" class="form-control" name="login">
                         <small></small>
                     </div>
                     <!-- Password -->
                     <div class="form-group mb-3">
-                        <label for="Password1" class="form-label">Password</label>
+                        <label for="Password1" class="form-label">Mot de passe</label>
                         <input type="password" class="form-control" name="password">
-                        <small></small>
-                    </div>
-
-                      <!--  Confirm Password -->
-                      <div class="form-group mb-3">
-                        <label for="Password1" class="form-label"> Confirm Password</label>
-                        <input type="password" class="form-control" name="confirmpassword">
                         <small></small>
                     </div>
 

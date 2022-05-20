@@ -2,97 +2,121 @@ document.addEventListener('DOMContentLoaded', (event) => {
 
     let form = document.querySelector('#loginForm');
 
+    // console.log(myArray['login']);
+
     // Ecouter la modification de l'email
-    form.email.addEventListener('change', function() {
-        validEmail(this);
+    form.email.addEventListener('change', function(e) {
+        validEmail(e.target);
+        console.log(validEmail(e.target));
+
     });
 
     // Ecouter la modification du login
-    form.login.addEventListener('change', function() {
-        validLogin(this);
+    form.login.addEventListener('change', function(e) {
+        validLogin(e.target);
+        console.log(validLogin(e.target));
     });
 
     // Ecouter la modification du password
-    form.password.addEventListener('change', function() {
-        validPassword(this);
+    form.password.addEventListener('change', function(e) {
+        validPassword(e.target);
+        console.log(validPassword(e.target));
     });
 
-    // // Ecouter la modification du  Confirm password
-    // form.confirmpassword.addEventListener('change', function() {
-    //     validPassword(this);
-    // });
-
-
     // Ecouter la soumission du formulaire
-    form.addEventListener('submit', function(e) {
+    form.addEventListener('submit', async function(e) {
         e.preventDefault();
-        if (validEmail(form.email) && validPassword(form.password)) {
+        if (validEmail(form.email) && validPassword(form.password) && validLogin(form.login)) {
             form.submit();
+        } else {
+            console.log("pas bon");
         }
     });
 
 
     // Validation EMAIL //
-    const validEmail = function(inputEmail) {
+    const validEmail = async function(inputEmail) {
+
+
         // Creation de la reg exp pour la validation de l'email
         let emailRegExp = new RegExp('^[a-zA-Z0-9.-_]+[@]{1}[a-zA-Z0-9.-_]+[.]{1}[a-z]{2,10}$', 'g');
 
         // recuperation de la balise small
         let small = inputEmail.nextElementSibling;
 
-        // on test l'expression reguliere
-        if (emailRegExp.test(inputEmail.value)) {
-            small.innerHTML = "Adresse Mail Valide";
-            small.classList.remove('text-danger');
-            small.classList.add('text-success');
-            return true;
-        } else {
-            small.innerHTML = "Adresse Non Valide"
-            small.classList.remove('text-success');
-            small.classList.add('text-danger');
-            return false;
-        }
+
+        return await fetch('traitement_Inscription01.php', {
+
+        }).then((response) =>
+            response.json()
+
+        ).then(response => {
+            var valid = false;
+            for (var i = 0; i < response.length; i++) {
+
+                if (inputEmail.value == response[i]['email']) {
+                    small.innerHTML = "Adresse pas au bon format ou déja utilisé"
+                    small.classList.remove('text-success');
+                    small.classList.add('text-danger');
+                    valid = false;
+                    // console.log(valid)
+                    return false;
+                } else {
+                    valid = true;
+                    // console.log(valid)
+                }
+            }
+            if (emailRegExp.test(inputEmail.value)) {
+                valid = true;
+                // console.log(valid)
+                // return true;
+            } else {
+                valid = false;
+                return false;
+                // console.log(valid)
+            }
+
+            console.log(valid);
+            if (valid) {
+                small.innerHTML = "Adresse Mail Valide";
+                small.classList.remove('text-danger');
+                small.classList.add('text-success');
+                // console.log("vrai")
+                return true;
+            } else if (valid == false) {
+                small.innerHTML = "Adresse pas au bon format ou déja utilisé"
+                small.classList.remove('text-success');
+                small.classList.add('text-danger');
+                // console.log("faux")
+                return false;
+            }
+
+        })
+
     };
 
     // Validation Login //
-    const validLogin = function(inputLogin) {
+    const validLogin = async function(inputLogin) {
+
         // recuperation de la balise small
         let small = inputLogin.nextElementSibling;
 
-        fetch('traitement_Inscription01.php', {
-            method: 'POST',
-        }).then(response => {
-            return response.json();
+        return await fetch('traitement_Inscription01.php', {
 
-        }).then(response => {
-            // response.forEach(element => {
-            //     console.log(element['login']);
-            //     console.log(inputLogin.value);
-            //     if (inputLogin.value == element['login']) {
-            //         small.innerHTML = "Login utilisé"
-            //         small.classList.remove('text-success');
-            //         small.classList.add('text-danger');
-            //         return false;
-            //     } else {
-            //         small.innerHTML = "login good";
-            //         small.classList.remove('text-danger');
-            //         small.classList.add('text-success');
-            //         // return true;/
-            //     }
-            // });
+        }).then((response) =>
+            response.json()
+        ).then(response => {
             for (var i = 0; i < response.length; i++) {
                 if (inputLogin.value == response[i]['login']) {
-                    small.innerHTML = "Login utilisé"
+                    small.innerHTML = "Nom d'utilisateur deja utilisé"
                     small.classList.remove('text-success');
                     small.classList.add('text-danger');
                     return false;
-                    // break
                 } else {
-                    small.innerHTML = "login good";
+                    small.innerHTML = "Nom d'utilisateur bon ";
                     small.classList.remove('text-danger');
                     small.classList.add('text-success');
-                    // return true;/
-
+                    return true;
                 }
             }
         })
@@ -142,6 +166,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
             small.innerHTML = msg;
             small.classList.remove('text-success');
             small.classList.add('text-danger');
+
             return false;
         }
     }
