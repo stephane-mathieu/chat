@@ -7,25 +7,29 @@ document.addEventListener('DOMContentLoaded', (event) => {
     // Ecouter la modification de l'email
     form.email.addEventListener('change', function(e) {
         validEmail(e.target);
-        console.log(validEmail(e.target));
+        // console.log(validEmail(e.target));
 
     });
 
     // Ecouter la modification du login
     form.login.addEventListener('change', function(e) {
         validLogin(e.target);
-        console.log(validLogin(e.target));
+        // console.log(validLogin(e.target));
     });
 
     // Ecouter la modification du password
     form.password.addEventListener('change', function(e) {
         validPassword(e.target);
-        console.log(validPassword(e.target));
+        // console.log(validPassword(e.target));
     });
 
     // Ecouter la soumission du formulaire
     form.addEventListener('submit', async function(e) {
         e.preventDefault();
+        // console.log(validLogin(form.login));
+        // console.log(validEmail(form.email));
+        // console.log(validPassword(form.password));
+
         if (validEmail(form.email) && validPassword(form.password) && validLogin(form.login)) {
             form.submit();
         } else {
@@ -53,12 +57,11 @@ document.addEventListener('DOMContentLoaded', (event) => {
         ).then(response => {
             var valid = false;
             for (var i = 0; i < response.length; i++) {
-
                 if (inputEmail.value == response[i]['email']) {
-                    small.innerHTML = "Adresse pas au bon format ou déja utilisé"
+                    small.innerHTML = "Adresse pas au bon format ou déja utilisé "
                     small.classList.remove('text-success');
                     small.classList.add('text-danger');
-                    valid = false;
+                    valid = "false";
                     // console.log(valid)
                     return false;
                 } else {
@@ -83,12 +86,6 @@ document.addEventListener('DOMContentLoaded', (event) => {
                 small.classList.add('text-success');
                 // console.log("vrai")
                 return true;
-            } else if (valid == false) {
-                small.innerHTML = "Adresse pas au bon format ou déja utilisé"
-                small.classList.remove('text-success');
-                small.classList.add('text-danger');
-                // console.log("faux")
-                return false;
             }
 
         })
@@ -97,7 +94,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
 
     // Validation Login //
     const validLogin = async function(inputLogin) {
-
+        let checked = false;
         // recuperation de la balise small
         let small = inputLogin.nextElementSibling;
 
@@ -108,16 +105,27 @@ document.addEventListener('DOMContentLoaded', (event) => {
         ).then(response => {
             for (var i = 0; i < response.length; i++) {
                 if (inputLogin.value == response[i]['login']) {
+                    console.log(i)
                     small.innerHTML = "Nom d'utilisateur deja utilisé"
                     small.classList.remove('text-success');
                     small.classList.add('text-danger');
+                    console.log("no")
                     return false;
                 } else {
-                    small.innerHTML = "Nom d'utilisateur bon ";
-                    small.classList.remove('text-danger');
-                    small.classList.add('text-success');
-                    return true;
+                    // small.innerHTML = "Nom d'utilisateur bon"
+                    // small.classList.remove('text-danger');
+                    // small.classList.add('text-success');
+                    console.log("yes")
+                    checked = true;
+                    // return true;
                 }
+
+            }
+            if (checked) {
+                small.innerHTML = "Nom d'utilisateur bon"
+                small.classList.remove('text-danger');
+                small.classList.add('text-success');
+                return true;
             }
         })
     };
