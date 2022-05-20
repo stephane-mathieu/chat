@@ -20,6 +20,13 @@ class Users{
         $content = $query->fetchAll();
         return $content;
     }
+    public function findloginuser($login){
+        $query = $this->pdo->prepare("SELECT * FROM `users` WHERE email = '$login'");
+        $query->setFetchMode(\PDO::FETCH_ASSOC);
+        $query->execute();
+        $content = $query->fetchAll();
+        return $content;
+    }
 
     public function InsertUser($email,$login,$password):void{
 

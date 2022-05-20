@@ -26,15 +26,17 @@ document.addEventListener('DOMContentLoaded', (event) => {
     // Ecouter la soumission du formulaire
     form.addEventListener('submit', async function(e) {
         e.preventDefault();
-        // console.log(validLogin(form.login));
-        // console.log(validEmail(form.email));
-        // console.log(validPassword(form.password));
+        console.log(await validEmail(form.email));
+        console.log(await validLogin(form.login));
+        console.log(await validPassword(form.password));
 
-        if (validEmail(form.email) && validPassword(form.password) && validLogin(form.login)) {
+        if ((await validEmail(form.email) === true) && (await validLogin(form.login) === true) && (await validPassword(form.password) === true)) {
+            console.log("good");
             form.submit();
         } else {
             console.log("pas bon");
         }
+
     });
 
 
@@ -48,7 +50,12 @@ document.addEventListener('DOMContentLoaded', (event) => {
         // recuperation de la balise small
         let small = inputEmail.nextElementSibling;
 
-
+        if (inputEmail.value == '') {
+            small.innerHTML = "Champ adresse mail vide"
+            small.classList.remove('text-success');
+            small.classList.add('text-danger');
+            return false;
+        }
         return await fetch('traitement_Inscription01.php', {
 
         }).then((response) =>
@@ -79,7 +86,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
                 // console.log(valid)
             }
 
-            console.log(valid);
+
             if (valid) {
                 small.innerHTML = "Adresse Mail Valide";
                 small.classList.remove('text-danger');
@@ -94,28 +101,34 @@ document.addEventListener('DOMContentLoaded', (event) => {
 
     // Validation Login //
     const validLogin = async function(inputLogin) {
+
         let checked = false;
         // recuperation de la balise small
         let small = inputLogin.nextElementSibling;
-
+        if (inputLogin.value == '') {
+            small.innerHTML = "Champ login vide"
+            small.classList.remove('text-success');
+            small.classList.add('text-danger');
+            return false;
+        }
         return await fetch('traitement_Inscription01.php', {
 
         }).then((response) =>
             response.json()
         ).then(response => {
             for (var i = 0; i < response.length; i++) {
+
                 if (inputLogin.value == response[i]['login']) {
-                    console.log(i)
-                    small.innerHTML = "Nom d'utilisateur deja utilisé"
+                    small.innerHTML = "Nom d'utilisateur déja utilisé"
                     small.classList.remove('text-success');
                     small.classList.add('text-danger');
-                    console.log("no")
+                    // console.log("no")
                     return false;
                 } else {
                     // small.innerHTML = "Nom d'utilisateur bon"
                     // small.classList.remove('text-danger');
                     // small.classList.add('text-success');
-                    console.log("yes")
+                    // console.log("yes")
                     checked = true;
                     // return true;
                 }
