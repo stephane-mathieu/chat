@@ -19,12 +19,12 @@ if (isset($_POST)) {
         $check = false;
     }
 
-    // if ($check) {
-    //     $password = password_hash($password, PASSWORD_BCRYPT);
-    //     // insert les donner dans la bdd
-    //     $add_user = $model->InsertUser($email, $login, $password);
-    //     // header("Location: Connexion.php");
-    // }else{
-    //     header("Location: inscription.php");
-    // }
+    if ($check) {
+        $password = password_hash($password, PASSWORD_BCRYPT);
+        // insert les donner dans la bdd
+        $add_user = $model->InsertUser($email, $login, $password);
+        header("Location: Connexion.php");
+    }else{
+        header("Location: inscription.php");
+    }
 }
